@@ -1,0 +1,44 @@
+name: Cypress Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  run-e2e:
+    runs-on: ubuntu-latest
+
+    env:
+      CYPRESS_username: ${{ secrets.CYPRESS_username }}
+      CYPRESS_password: ${{ secrets.CYPRESS_password }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run E2E tests with Cypress
+        run: npx cypress run
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: screenshots
+          path: cypress/screenshots
+
+      - name: Upload videos
+        if: always()
+        uses: actions/upload-artifact@main
+        with:
+          name: videos
+          path: cypress/videos
