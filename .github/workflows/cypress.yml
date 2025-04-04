@@ -31,14 +31,14 @@ jobs:
 
       - name: Upload screenshots on failure
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@main
         with:
           name: screenshots
           path: cypress/screenshots
 
       - name: Upload videos
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@main
         with:
           name: videos
           path: cypress/videos
