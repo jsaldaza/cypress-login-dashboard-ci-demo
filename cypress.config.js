@@ -14,8 +14,8 @@ module.exports = defineConfig({
       require("dotenv").config(); // Asegura que .env se cargue si no está ya
 
       // 🔐 Compatibilidad con local y GitHub Actions
-      config.env.username = process.env.CYPRESS_USERNAME || process.env.CYPRESS_username;
-      config.env.password = process.env.CYPRESS_PASSWORD || process.env.CYPRESS_password;
+      config.env.username = process.env.CYPRESS_username;
+      config.env.password = process.env.CYPRESS_password;
 
       preprocessor.addCucumberPreprocessorPlugin(on, config);
       on("file:preprocessor", createBundler({ plugins: [createEsbuildPlugin(config)] }));
