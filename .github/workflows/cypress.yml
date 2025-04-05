@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Restore Allure History
-        uses: actions/download-artifact@4.2.1
+        uses: actions/download-artifact@v4.2.1
         continue-on-error: true
         with:
           name: allure-history
@@ -55,12 +55,10 @@ jobs:
           name: allure-report
           path: allure-report
 
-  cleanup-old-artifacts:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-    steps:
-      - name: Delete Allure history artifact
-        uses: geekyeggo/delete-artifact@v5.1.0
+      # 🔥 NUEVO: Despliegue automático a GitHub Pages
+      - name: Deploy Allure Report to GitHub Pages 🚀
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: allure-history
-          failOnError: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
