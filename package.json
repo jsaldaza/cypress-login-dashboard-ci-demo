@@ -6,15 +6,16 @@
   "author": "jsaldaza",
   "type": "commonjs",
   "scripts": {
-  "test:allure": "npm run test:allure:run && npm run allure:open",
-  "test:allure:run": "cypress run --env allure=true",
-  "allure:generate": "allure generate allure-results --clean -o allure-report",
-  "allure:open": "allure open allure-report",
-  "allure:full": "npm run test:allure:run && npm run allure:generate && npm run allure:open",
-  "open": "npx cypress run --env allure=true && npm run allure:generate && npm run allure:open",
-  "test": "cypress run"
-}
-,
+    "allure:full": "npm run test:allure:run && npm run allure:generate && npm run allure:open",
+    "open": "npx cypress run --env allure=true && npm run allure:generate && npm run allure:open",
+    "test": "cypress run",
+    "pretest": "node verify-env.js",
+    "test:allure:run": "cypress run --env allure=true",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "test:allure": "npx cypress run --env allure=true && npm run allure:generate && npm run allure:open",
+    "allure:open": "allure open allure-report"
+
+},
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^22.0.1",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.4",
@@ -22,6 +23,7 @@
     "allure-commandline": "^2.33.0",
     "cypress": "^14.2.1",
     "cypress-mochawesome-reporter": "^3.8.2",
+    "dotenv": "^16.4.7",
     "esbuild": "^0.25.2",
     "marge": "^1.0.1",
     "mochawesome": "^7.1.3",
