@@ -1,4 +1,4 @@
-# 🚀 Cypress BDD E2E Framework with Cucumber, POM & GitHub Actions
+# 🚀 Cypress Login & Dashboard Automation with CI/CD, POM & Allure Reports
 
 Welcome to a professional end-to-end (E2E) test automation framework powered by **Cypress**, **Cucumber**, and the **Page Object Model (POM)**. This project demonstrates a clean, scalable structure for real-world web testing using [OrangeHRM](https://opensource-demo.orangehrmlive.com/) as the test target.
 
@@ -14,6 +14,7 @@ Whether you're a beginner or looking to scale your test suite with CI/CD, this f
 | [Cucumber](https://cucumber.io/) + [Gherkin](https://cucumber.io/docs/gherkin/reference/) | BDD syntax for readable scenarios |
 | Page Object Model (POM)          | Code abstraction and maintainability |
 | [GitHub Actions](https://github.com/features/actions)         | CI/CD automation                   |
+| [Allure Reports](https://docs.qameta.io/allure/)  | Advanced HTML test reports         |
 | `.env` + GitHub Secrets          | Secure credentials handling       |
 
 ---
@@ -70,6 +71,8 @@ This repository is structured to support progressive learning:
 - [x] Environment variable handling via `.env` and GitHub Secrets
 - [x] Login + Dashboard E2E flow
 - [x] GitHub Actions CI setup
+- [x] HTML reporting with Mochawesome
+- [x] Advanced reporting with Allure 🎯
 - [ ] 🔜 Advanced flows (Leave requests, Buzz, PIM)
 - [ ] 🔜 Visual testing or API validations
 
@@ -79,6 +82,8 @@ This repository is structured to support progressive learning:
 
 ### 1. Install dependencies:
 ```bash
+git clone https://github.com/jsaldaza/cypress-login-dashboard-ci-demo
+cd cypress-login-dashboard-ci-demo
 npm install
 
 # Cypress test runner
@@ -89,10 +94,12 @@ npm install --save-dev @badeball/cypress-cucumber-preprocessor
 
 # Webpack + esbuild for bundling Cucumber feature files
 npm install --save-dev @cypress/webpack-preprocessor esbuild
+
+# Allure reporting dependencies
+npm install --save-dev @shelex/cypress-allure-plugin allure-commandline
 ```
 
 ### 2. Add environment credentials:
-
 Create a `.env` file in your project root:
 
 ```env
@@ -100,13 +107,20 @@ CYPRESS_username=Admin
 CYPRESS_password=admin123
 ```
 
-> ✅ **Note:** This file is in `.gitignore` to keep credentials secure.
+> ✅ **Note:** This file is in `.gitignore` to keep credentials secure.  
 > ⚠️ **Note:** These credentials are only valid for the OrangeHRM public demo site.
 
 ### 3. Run tests locally:
 ```bash
-npx cypress open     # For interactive UI
-npx cypress run      # Headless mode (CI-friendly)
+npx cypress open             # For interactive UI
+npx cypress run              # Headless mode with Mochawesome
+npx cypress run --env allure=true   # Generate Allure report data
+```
+
+### 4. Generate Allure Report:
+```bash
+npx allure generate allure-results --clean -o allure-report
+npx allure open allure-report
 ```
 
 ---
@@ -129,6 +143,7 @@ Stored in:
 - [Cucumber Preprocessor for Cypress](https://github.com/badeball/cypress-cucumber-preprocessor)
 - [Page Object Pattern](https://martinfowler.com/bliki/PageObject.html)
 - [GitHub Actions Documentation](https://docs.github.com/actions)
+- [Allure Reporting Docs](https://docs.qameta.io/allure/)
 
 ---
 
@@ -138,6 +153,7 @@ This project was created to help:
 - Developers and QA engineers learn Cypress in a real context
 - Teams adopt BDD-style testing without sacrificing maintainability
 - Show how to scale from local tests to CI pipelines
+- Demonstrate dual-reporting strategies: Mochawesome & Allure
 
 ---
 
@@ -145,7 +161,7 @@ This project was created to help:
 
 Built by [@jsaldaza](https://github.com/jsaldaza) with the goal of sharing Cypress testing knowledge and best practices.
 
-> ⭐ If this project helped you learn something, consider giving it a star!
+>If this project helped you learn something, consider giving it a star!
 
 ---
 
