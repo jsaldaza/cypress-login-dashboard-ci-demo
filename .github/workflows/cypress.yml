@@ -1,44 +1,61 @@
-name: Cypress Tests
+name: Run Cypress with Allure
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
 
 jobs:
-  run-e2e:
+  e2e-allure:
     runs-on: ubuntu-latest
-
-    env:
-      CYPRESS_username: ${{ secrets.CYPRESS_username }}
-      CYPRESS_password: ${{ secrets.CYPRESS_password }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@main
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@main
         with:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Run E2E tests with Cypress
-        run: npx cypress run
+      - name: Restore Allure History
+        uses: actions/download-artifact@main
+        with:
+          name: allure-history
+          path: allure-results/history
 
-      - name: Upload screenshots on failure
-        if: failure()
+      - name: Run Cypress tests with Allure
+        run: npx cypress run --env allure=true
+
+      - name: Generate Allure report
+        run: npx allure generate allure-results --clean -o allure-report
+
+      - name: Copy report history for next builds
+        run: |
+          mkdir -p allure-results/history
+          cp -r allure-report/history/* allure-results/history/ || echo "No history to copy"
+
+      - name: Save Allure History
         uses: actions/upload-artifact@main
         with:
-          name: screenshots
-          path: cypress/screenshots
+          name: allure-history
+          path: allure-report/history
 
-      - name: Upload videos
-        if: always()
+      - name: Upload Allure Report as Artifact
         uses: actions/upload-artifact@main
         with:
-          name: videos
-          path: cypress/videos
+          name: allure-report
+          path: allure-report
+
+  cleanup-old-artifacts:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - name: Delete old Allure report artifacts (limit to last 10)
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          name: allure-history
+          max-versions: 10
