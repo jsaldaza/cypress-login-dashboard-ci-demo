@@ -1,20 +1,21 @@
-name: Run Cypress with Allure
+name: Cypress Tests with Allure
 
 on:
   push:
     branches: [main, develop]
   pull_request:
+    branches: [main, develop]
 
 jobs:
-  e2e-allure:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@main
+        uses: actions/setup-node@v3
         with:
           node-version: 18
 
@@ -23,6 +24,7 @@ jobs:
 
       - name: Restore Allure History
         uses: actions/download-artifact@main
+        continue-on-error: true
         with:
           name: allure-history
           path: allure-results/history
@@ -54,8 +56,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     steps:
-      - name: Delete old Allure report artifacts (limit to last 10)
+      - name: Delete Allure history artifact
         uses: geekyeggo/delete-artifact@v2
         with:
           name: allure-history
-          max-versions: 10
+          failOnError: false
