@@ -7,7 +7,7 @@ on:
     branches: [main, develop]
 
 permissions:
-  contents: write  # ✅ Permite hacer push a gh-pages desde el bot
+  contents: write # ✅ Permite hacer push a gh-pages desde el bot
 
 jobs:
   test:
