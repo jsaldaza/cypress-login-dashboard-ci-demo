@@ -19,9 +19,11 @@ When("I login with secret credentials", () => {
   console.log("Loaded ENV username:", username);
   console.log("Loaded ENV password (masked):", password ? '*'.repeat(password.length) : '(not set)');
   console.log("Username from env:", Cypress.env("username"));
+  console.log("Loaded credentials from Cypress.env():", Cypress.env("username"), Cypress.env("password"));
+
 
   if (!username || !password) {
-    console.warn("⚠️ Missing Cypress environment variables. Check your .env or GitHub Secrets.");
+    console.warn("Missing Cypress environment variables. Check your .env or GitHub Secrets.");
   }
 
   loginPage.enterUsername(username);

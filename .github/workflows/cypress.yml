@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Restore Allure History
-        uses: actions/download-artifact@main
+        uses: actions/download-artifact@v3
         continue-on-error: true
         with:
           name: allure-history
@@ -31,6 +31,9 @@ jobs:
 
       - name: Run Cypress tests with Allure
         run: npx cypress run --env allure=true
+        env:
+          CYPRESS_USERNAME: ${{ secrets.CYPRESS_USERNAME }}
+          CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
 
       - name: Generate Allure report
         run: npx allure generate allure-results --clean -o allure-report
@@ -41,13 +44,13 @@ jobs:
           cp -r allure-report/history/* allure-results/history/ || echo "No history to copy"
 
       - name: Save Allure History
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         with:
           name: allure-history
           path: allure-report/history
 
       - name: Upload Allure Report as Artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         with:
           name: allure-report
           path: allure-report
