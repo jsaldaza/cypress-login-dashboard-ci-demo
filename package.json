@@ -13,18 +13,20 @@
     "test:allure:run": "cypress run --env allure=true",
     "allure:generate": "allure generate allure-results --clean -o allure-report",
     "test:allure": "npx cypress run --env allure=true && npm run allure:generate && npm run allure:open",
-    "allure:open": "allure open allure-report"
-
-},
+    "allure:open": "allure open allure-report",
+    "allure:deploy": "gh-pages -d allure-report"
+  },
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^22.0.1",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.4",
     "@shelex/cypress-allure-plugin": "^2.41.0",
     "allure-commandline": "^2.33.0",
+    "allure-js-commons": "^3.2.1",
     "cypress": "^14.2.1",
     "cypress-mochawesome-reporter": "^3.8.2",
     "dotenv": "^16.4.7",
     "esbuild": "^0.25.2",
+    "gh-pages": "^6.3.0",
     "marge": "^1.0.1",
     "mochawesome": "^7.1.3",
     "mochawesome-merge": "^5.0.0",
