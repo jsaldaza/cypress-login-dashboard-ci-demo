@@ -19,3 +19,7 @@ Thumbs.db
 
 # Cypress environment file
 cypress.env.json
+
+# Allure report and results
+allure-report/
+allure-results/

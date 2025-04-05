@@ -17,3 +17,10 @@ Given("I am logged in", () => {
 Then("I should see the dashboard content", () => {
   dashboardPage.validateDashboardLoaded();
 });
+Then("the dashboard should display key widgets", () => {
+  cy.get(".orangehrm-dashboard-widget").should("have.length.at.least", 1);
+  cy.contains("Time at Work").should("be.visible");
+  cy.contains("My Actions").should("be.visible");
+  cy.contains("Quick Launch").should("exist");
+});
+
