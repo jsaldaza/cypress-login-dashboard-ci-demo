@@ -12,10 +12,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.2.2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4.3.0
         with:
           node-version: 18
 
@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Restore Allure History
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@4.2.1
         continue-on-error: true
         with:
           name: allure-history
@@ -44,13 +44,13 @@ jobs:
           cp -r allure-report/history/* allure-results/history/ || echo "No history to copy"
 
       - name: Save Allure History
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: allure-history
           path: allure-report/history
 
       - name: Upload Allure Report as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: allure-report
           path: allure-report
@@ -60,7 +60,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     steps:
       - name: Delete Allure history artifact
-        uses: geekyeggo/delete-artifact@v2
+        uses: geekyeggo/delete-artifact@v5.1.0
         with:
           name: allure-history
           failOnError: false
