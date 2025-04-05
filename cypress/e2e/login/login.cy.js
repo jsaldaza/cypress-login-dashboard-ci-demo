@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 // ***********************************************************
-import LoginPage from "../../support/PageObjects/loginPage";
-import DashboardPage from "../../support/PageObjects/dashboardPage";
+import LoginPage from "../../support/pageObjects/loginPage";
+
 
 
 

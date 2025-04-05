@@ -1,44 +1,66 @@
-name: Cypress Tests
+name: Cypress Tests with Allure
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
-  run-e2e:
+  test:
     runs-on: ubuntu-latest
-
-    env:
-      CYPRESS_username: ${{ secrets.CYPRESS_username }}
-      CYPRESS_password: ${{ secrets.CYPRESS_password }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.2.2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.3.0
         with:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Run E2E tests with Cypress
-        run: npx cypress run
-
-      - name: Upload screenshots on failure
-        if: failure()
-        uses: actions/upload-artifact@main
+      - name: Restore Allure History
+        uses: actions/download-artifact@4.2.1
+        continue-on-error: true
         with:
-          name: screenshots
-          path: cypress/screenshots
+          name: allure-history
+          path: allure-results/history
 
-      - name: Upload videos
-        if: always()
-        uses: actions/upload-artifact@main
+      - name: Run Cypress tests with Allure
+        run: npx cypress run --env allure=true
+        env:
+          CYPRESS_USERNAME: ${{ secrets.CYPRESS_USERNAME }}
+          CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
+
+      - name: Generate Allure report
+        run: npx allure generate allure-results --clean -o allure-report
+
+      - name: Copy report history for next builds
+        run: |
+          mkdir -p allure-results/history
+          cp -r allure-report/history/* allure-results/history/ || echo "No history to copy"
+
+      - name: Save Allure History
+        uses: actions/upload-artifact@v4.6.2
         with:
-          name: videos
-          path: cypress/videos
+          name: allure-history
+          path: allure-report/history
+
+      - name: Upload Allure Report as Artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: allure-report
+          path: allure-report
+
+  cleanup-old-artifacts:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - name: Delete Allure history artifact
+        uses: geekyeggo/delete-artifact@v5.1.0
+        with:
+          name: allure-history
+          failOnError: false
