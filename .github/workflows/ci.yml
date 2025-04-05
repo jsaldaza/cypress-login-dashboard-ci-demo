@@ -1,4 +1,4 @@
-name: Run Cypress Tests with Allure Report
+name: Run Cypress with Allure
 
 on:
   push:
@@ -6,12 +6,12 @@ on:
   pull_request:
 
 jobs:
-  cypress-e2e:
+  e2e-allure:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@main
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -26,8 +26,9 @@ jobs:
         with:
           name: allure-history
           path: allure-results/history
+        continue-on-error: true
 
-      - name: Run Cypress tests with Allure plugin
+      - name: Run Cypress tests
         run: npx cypress run --env allure=true
 
       - name: Generate Allure report
@@ -44,8 +45,10 @@ jobs:
           name: allure-history
           path: allure-report/history
 
-      - name: Upload Allure report as artifact
+      - name: Upload Allure Report as Artifact
         uses: actions/upload-artifact@main
         with:
           name: allure-report
           path: allure-report
+
+          
