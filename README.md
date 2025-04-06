@@ -1,5 +1,8 @@
 # 🚀 Cypress Login & Dashboard Automation with CI/CD, POM & GitHub Actions
 
+[![Allure Report](https://img.shields.io/badge/Allure-Report-blue?logo=allure&style=for-the-badge)](https://jsaldaza.github.io/cypress-login-dashboard-ci-demo/)
+![CI](https://github.com/jsaldaza/cypress-login-dashboard-ci-demo/actions/workflows/cypress.yml/badge.svg)
+
 Welcome to a professional end-to-end (E2E) test automation framework powered by **Cypress**, **Cucumber**, and the **Page Object Model (POM)**. This project demonstrates a clean, scalable structure for real-world web testing using [OrangeHRM](https://opensource-demo.orangehrmlive.com/) as the test target.
 
 Whether you're a beginner or looking to scale your test suite with CI/CD, this framework is designed to be **educational, reusable, and enterprise-ready**.
@@ -43,7 +46,7 @@ cypress-login-dashboard-ci-demo/
 ├─ .env.example                # Safe example for contributors
 ├─ .gitignore
 ├─ cypress.config.js
-├─ package.json
+└─ package.json
 ```
 
 ---
@@ -124,6 +127,12 @@ npx allure open allure-report
 
 > 🧠 Tip: Historical test trends are preserved between builds using GitHub Actions artifacts.
 
+> 📅 View the live report: [Allure Report on GitHub Pages](https://jsaldaza.github.io/cypress-login-dashboard-ci-demo/)
+
+## 📸 Report Preview
+
+![Allure Report Screenshot](docs/assets/allure-preview.png)
+
 ---
 
 ## 🚀 Continuous Integration
@@ -136,6 +145,17 @@ Secrets used:
 
 Stored in:
 > **GitHub** → Settings → Secrets and variables → Actions
+
+---
+
+## 💡 Pro Tips
+
+- ✅ Use `npm run test:allure` to run and preview Allure locally.
+- 🧪 Add `--env allure=true` to any test run to generate Allure results.
+- 🧠 Use `.env` + GitHub Secrets to avoid exposing credentials in code.
+- 🚀 Share the public Allure link with team members for easy access.
+- 📀 Historical trends are automatically preserved between CI builds.
+- 📆 Keep the `allure-results` folder out of version control (`.gitignore`).
 
 ---
 
@@ -159,3 +179,4 @@ Built by [@jsaldaza](https://github.com/jsaldaza) with the goal of sharing Cypre
 ## 📱 License
 
 MIT License. Feel free to fork and contribute!
+

@@ -15,4 +15,13 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
-import '@shelex/cypress-allure-plugin'; // ✅ Este importa los hooks necesarios
+import '@shelex/cypress-allure-plugin'; // Este importa los hooks necesarios
+
+// Captura automática en caso de fallo y adjunta al reporte Allure
+Cypress.on('fail', (error, runnable) => {
+  const testName = runnable.title.replace(/[:\/]/g, '');
+  const screenshotFileName = `failure-${testName}`;
+  cy.screenshot(screenshotFileName);
+  throw error;
+});
+
